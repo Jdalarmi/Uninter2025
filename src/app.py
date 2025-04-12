@@ -1,10 +1,10 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
-from src.database.database import Base, engine
-from src.routes import paciente
-from src.auth.jwt_handler import create_access_token
-from src.auth.dependencies import get_current_user
+from database.database import Base, engine
+from routes import paciente
+from auth.jwt_handler import create_access_token
+from auth.dependencies import get_current_user
 from dotenv import load_dotenv
 import os
 
@@ -29,7 +29,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    access_token_expires = timedelta(minutes=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")))
+    access_token_expires = timedelta(minutes=int(os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES")))
     access_token = create_access_token(
         data={"sub": form_data.username}, expires_delta=access_token_expires
     )
