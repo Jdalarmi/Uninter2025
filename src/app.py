@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
 from database.database import Base, engine
-from routes import paciente
+from routes import paciente, medico, consulta
 from auth.jwt_handler import create_access_token
 from auth.dependencies import get_current_user
 from dotenv import load_dotenv
@@ -18,6 +18,18 @@ app.include_router(
     paciente.router,
     prefix="/pacientes",
     tags=["pacientes"]
+)
+
+app.include_router(
+    medico.router,
+    prefix="/medicos",
+    tags=["medicos"]
+)
+
+app.include_router(
+    consulta.router,
+    prefix="/consultas",
+    tags=["consultas"]
 )
 
 @app.post("/token")
